@@ -1,85 +1,34 @@
 package javaExercises.SortMatrix;
 
-import java.util.Arrays;
-import java.util.Random;
+import java.util.*;
 
 public class SortMatrix {
-    public int[][] populateArrayWithRandomValues(int n, int max, int min) {
-
-        Random r = new Random();
-        int[][] arr = new int[n][n];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                arr[i][j] = r.nextInt(max - min) - min + 1;
+    public int[][] populateArrayWithRandomValues(int matrixSize, int matrixBoundary ) {
+        Random random = new Random();
+        int[][] arr = new int[matrixSize][matrixSize];
+        for (int i = 0; i < matrixSize; i++) {
+            for (int j = 0; j < matrixSize; j++) {
+                arr[i][j] = random.nextInt(matrixBoundary);
             }
         }
         return arr;
     }
 
-    public void printArray(int[][] arr) {
-
-        for (int[] value : arr) {
-            for (int value1 : value) {
-                System.out.print(value1 + "\t");
-            }
-            System.out.println();
-        }
-    }
-
-    public int[] sortLines(int[][] arr) {
-        int n = arr[0].length;
-        int[] arrOfSum = new int[n];
-        int[] arrOfIndexes = new int[n];
-
-        for (int i = 0; i < n; i++)
-            for (int j = 0; j < n; j++) {
-
-                arrOfSum[i] += arr[i][j];
-                arrOfIndexes[i] = i;
-            }
-        int temp;
-        int tempIndex;
-
-        for (int i = 0; i < arrOfSum.length; i++)
-            for (int j = 1; j < arrOfSum.length; j++) {
-                if (arrOfSum[j - 1] > arrOfSum[j]) {
-                    temp = arrOfSum[j - 1];
-                    tempIndex = arrOfIndexes[j - 1];
-                    arrOfSum[j - 1] = arrOfSum[j];
-                    arrOfIndexes[j - 1] = arrOfIndexes[j];
-                    arrOfSum[j] = temp;
-                    arrOfIndexes[j] = tempIndex;
-                }
-            }
-        return arrOfIndexes;
-    }
-
-    public int[][] sortMatrixByLinesSum(int[][] arr) {
-        int[] arrOfSortedIndexes = sortLines(arr);
-        int n = arrOfSortedIndexes.length;
-
-        int[][] arrSortByLinesSum = new int[n][n];
-
-        for (int i = 0; i < n; i++)
-            for (int j = 0; j < n; j++) {
-
-                arrSortByLinesSum[i][j] = arr[arrOfSortedIndexes[i]][j];
-            }
-        return arrSortByLinesSum;
+    public static void printArray(Map<Integer, Integer[]> map) {
+        for (Map.Entry<Integer, Integer[]> entry : map.entrySet())
+            System.out.println(Arrays.toString(map.get(entry.getKey())));
     }
 
     public static void main(String[] args) {
+        SortMatrix sortMatrix = new SortMatrix();
+        int[][] arr = sortMatrix.populateArrayWithRandomValues(3, 20);
+        Map<Integer, Integer[]> arrMap = new HashMap<Integer, Integer[]>();
+        for (int i = 0; i < arr[0].length; i++)
+            arrMap.put(Arrays.stream(arr[i]).sum(),Arrays.stream(arr[i]).boxed().toArray(Integer[]::new));
 
-        SortMatrix sm = new SortMatrix();
-
-        int[][] arr = sm.populateArrayWithRandomValues(3, 20, 1);
         System.out.println("Unsorted Matrix:");
-        sm.printArray(arr);
-        int[] arrOfSortedIndexes = sm.sortLines(arr);
-        System.out.println(Arrays.toString(arrOfSortedIndexes));
-
-        arr = sm.sortMatrixByLinesSum(arr);
+        sortMatrix.printArray(arrMap);
         System.out.println("Sorted Matrix:");
-        sm.printArray(arr);
+        sortMatrix.printArray(new TreeMap<Integer, Integer[]>(arrMap));
     }
 }
