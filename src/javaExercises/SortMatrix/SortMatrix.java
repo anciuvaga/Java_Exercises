@@ -1,6 +1,7 @@
 package javaExercises.SortMatrix;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SortMatrix {
     public int[][] populateArrayWithRandomValues(int matrixSize, int matrixBoundary ) {
@@ -29,6 +30,8 @@ public class SortMatrix {
         System.out.println("Unsorted Matrix:");
         sortMatrix.printArray(arrMap);
         System.out.println("Sorted Matrix:");
-        sortMatrix.printArray(new TreeMap<Integer, Integer[]>(arrMap));
+        sortMatrix.printArray(arrMap.entrySet().stream().sorted(Map.Entry.comparingByKey())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue, LinkedHashMap::new)));
     }
 }
