@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Palindrome {
     public static boolean checkIfPalindrome(String text) {
-        String cleanString = text.replaceAll("\\s+", "");
+        String cleanString = text.trim();
         int length = cleanString.length();
 
         int forward = 0;
@@ -24,7 +24,7 @@ public class Palindrome {
     public static boolean verifyIfPalindrome(String text) {
 
         StringBuilder reversedString = new StringBuilder();
-        String cleanString = text.replaceAll("\\s+", "");
+        String cleanString = text.trim();
 
         char[] charsArray = cleanString.toCharArray();
 
@@ -35,15 +35,12 @@ public class Palindrome {
     }
 
     public static void main(String[] args) {
-
-        Scanner sc = new Scanner(System.in);
+        Scanner input = new Scanner(System.in);
         System.out.println("Input the desired word:");
-        boolean palindromeCheck = verifyIfPalindrome(sc.nextLine());
-        if (palindromeCheck == true) {
-            System.out.println("Word inputed is a palindrome");
+        if (checkIfPalindrome(input.nextLine())) {
+            System.out.println("Text input is a palindrome");
         } else {
-            System.out.println("Word inputed is not a palindrome");
+            System.out.println("Text input is not a palindrome");
         }
     }
 }
-
