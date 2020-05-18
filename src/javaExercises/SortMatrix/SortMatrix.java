@@ -1,10 +1,9 @@
 package javaExercises.SortMatrix;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class SortMatrix {
-    public int[][] populateArrayWithRandomValues(int matrixSize, int matrixBoundary ) {
+    public int[][] populateArrayWithRandomValues(int matrixSize, int matrixBoundary) {
         Random random = new Random();
         int[][] arr = new int[matrixSize][matrixSize];
         for (int i = 0; i < matrixSize; i++) {
@@ -15,9 +14,11 @@ public class SortMatrix {
         return arr;
     }
 
-    public static void printArray(Map<Integer, Integer[]> map) {
-        for (Map.Entry<Integer, Integer[]> entry : map.entrySet())
-            System.out.println(Arrays.toString(map.get(entry.getKey())));
+    public static void printArray(Map<Integer, Integer[]> map, Integer[] keys) {
+        // for (Map.Entry<Integer, Integer[]> entry : map.entrySet())
+        for(Integer value : keys){
+            System.out.println(Arrays.toString(map.get(value)));
+        }
     }
 
     public static void main(String[] args) {
@@ -25,13 +26,21 @@ public class SortMatrix {
         int[][] arr = sortMatrix.populateArrayWithRandomValues(3, 20);
         Map<Integer, Integer[]> arrMap = new HashMap<Integer, Integer[]>();
         for (int i = 0; i < arr[0].length; i++)
-            arrMap.put(Arrays.stream(arr[i]).sum(),Arrays.stream(arr[i]).boxed().toArray(Integer[]::new));
-
+            arrMap.put(Arrays.stream(arr[i]).sum(), Arrays.stream(arr[i]).boxed().toArray(Integer[]::new));
+        Integer[] sortkeys = arrMap.keySet().toArray(new Integer[arrMap.keySet().size()]);
         System.out.println("Unsorted Matrix:");
-        sortMatrix.printArray(arrMap);
+        sortMatrix.printArray(arrMap, sortkeys);
+
+        Integer temp;
+        for (int i = 0; i < sortkeys.length; i++)
+            for (int j = 1; j < sortkeys.length - i; j++) {
+                if (sortkeys[j - 1] > sortkeys[j]) {
+                    temp = sortkeys[j];
+                    sortkeys[j] = sortkeys[j - 1];
+                    sortkeys[j - 1] = temp;
+                }
+            }
         System.out.println("Sorted Matrix:");
-        sortMatrix.printArray(arrMap.entrySet().stream().sorted(Map.Entry.comparingByKey())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
-                        (oldValue, newValue) -> oldValue, LinkedHashMap::new)));
+        sortMatrix.printArray(arrMap, sortkeys);
     }
 }
