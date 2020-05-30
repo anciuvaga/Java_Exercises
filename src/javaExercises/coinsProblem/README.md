@@ -1,0 +1,2 @@
+# Given a list of coins with different values (1, 3, 10, 25, 50), determine the minimum amount of coins needed to sum up a certain amount of money
+# Given input n = 33, the output should be: 4 (due to 33 = 10+10+10+3)
